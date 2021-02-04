@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-//const uri = 'mongodb+srv://vishaka:Vishaka@cluster0.u0mor.mongodb.net/questions?retryWrites=true&w=majority';
+//console.log('PASS IS',process.env.ATLAS_PASS);
 const uri='mongodb+srv://abhishek:abhishek54321@cluster0.dfvfh.mongodb.net/Productapp?retryWrites=true&w=majority';
 mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true})
         .then(()=>console.log('CONNECTED'))

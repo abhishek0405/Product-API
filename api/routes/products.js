@@ -4,13 +4,29 @@ const Product = require('../models/products'); // the product model
 const router = express.Router()
 router.get('/',(req,res,next)=>{ //aldready products specified in app.js so no need again
     Product.find()
+           .select("name price _id") //separate with space only these attris taken now
            .exec()
            .then(docs=>{
-               //docs is an array
+               //docs is an array of objects
                console.log(docs);
+               const send_result = {
+                   count:docs.length,
+                   products:docs.map(doc=>{
+                       
+                    return {
+                        name:doc.name,
+                        price:doc.price,
+                        _id:doc._id,
+                        request:{
+                            type:"GET",
+                            url:'http://localhost:3000/products/'+doc._id
+                        }
+                    }
+                   })
+               }
                res.status(200).json({
                    message:'Succesfully Fetched products',
-                   doc:docs
+                   details:send_result
                })
            })
            .catch(err=>{
@@ -31,9 +47,18 @@ router.post('/',(req,res,next)=>{ //aldready products specified in app.js so no 
     product.save() 
            .then(result=>{
                console.log('Succesfully saved');
+               const createdProduct = {
+                   name : result.name,
+                   price:result.price,
+                   _id:result._id,
+                   request:{
+                       type:'GET',
+                       url:'http://localhost:3000/products'+result._id
+                   }
+               }
                res.status(201).json({
                 message:'SUCCESFUL POST REQUEST',
-                createdProduct:product
+                createdProduct:createdProduct
             });
            })
            .catch(err=>{
