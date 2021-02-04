@@ -53,7 +53,7 @@ router.post('/',(req,res,next)=>{ //aldready products specified in app.js so no 
                    _id:result._id,
                    request:{
                        type:'GET',
-                       url:'http://localhost:3000/products'+result._id
+                       url:'http://localhost:3000/products/'+result._id
                    }
                }
                res.status(201).json({
