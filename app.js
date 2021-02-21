@@ -18,6 +18,7 @@ const orderRoutes = require('./api/routes/orders');
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());//to read json from posterquests
+app.use('/api//uploads//',express.static('api/uploads'));//serve static files
 //CORS SETUP
 app.use((req,res,next)=>{
     res.header('Access-Control-Allow-Origin','*');// * means all resources.
