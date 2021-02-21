@@ -5,6 +5,7 @@ const router = express.Router()
 router.get('/',(req,res,next)=>{ //aldready products specified in app.js so no need again
     Order.find()
          .select("quantity product _id")
+         .populate('product')// product points to the id in json response.Using populate('product','name price') we can  the specific info we need
          .exec()
          .then(order_arr=>{
              console.log('Fetched orders succesfully');
