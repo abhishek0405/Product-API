@@ -14,7 +14,7 @@ mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true})
         
 const productRoutes = require('./api/routes/products');//gets from module.exports there
 const orderRoutes = require('./api/routes/orders');
- 
+const userRoutes = require('./api/routes/user');
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());//to read json from posterquests
@@ -31,6 +31,7 @@ app.use((req,res,next)=>{
 });
 app.use('/products',productRoutes); // anything with /products sent to product.js
 app.use('/orders',orderRoutes);
+app.use('/user',userRoutes);
 //if reach here then no route satisfied
 app.use((req,res,next)=>{
     const error = new Error('Not found');
