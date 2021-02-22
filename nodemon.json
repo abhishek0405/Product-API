@@ -1,5 +1,6 @@
 {
     "env":{
-       "ATLAS_PASS":"abhishek54321"
+       "ATLAS_PASS":"ABHISHEK54321",
+       "JWT_KEY":"secret"
     }
 }

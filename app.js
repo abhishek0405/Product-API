@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 //console.log('PASS IS',process.env.ATLAS_PASS);
-const uri='mongodb+srv://abhishek:ABHISHEK54321@cluster0.dfvfh.mongodb.net/Productapp?retryWrites=true&w=majority';
+const uri='mongodb+srv://abhishek:'+process.env.ATLAS_PASS+'@cluster0.dfvfh.mongodb.net/Productapp?retryWrites=true&w=majority';
 mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true})
         .then(()=>console.log('CONNECTED'))
         .catch((err)=>{

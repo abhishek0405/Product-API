@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const Product = require('../models/products'); // the product model
 const router = express.Router();
-
+const checkAuth = require('../middleware/check-auth');
 const multer = require('multer');
 /*const storage = multer.diskStorage({
     destination:function(req,file,cb){ //cb is call back
@@ -77,7 +77,7 @@ router.get('/',(req,res,next)=>{ //aldready products specified in app.js so no n
            })
 });
 
-router.post('/',upload.single('productImage'),(req,res,next)=>{ //aldready products specified in app.js so no need again
+router.post('/',checkAuth,upload.single('productImage'),(req,res,next)=>{ //aldready products specified in app.js so no need again
     console.log(req.file);
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),

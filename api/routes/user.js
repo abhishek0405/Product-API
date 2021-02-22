@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 router.post("/signup",(req,res,next)=>{ 
     User.find({email:req.body.email})
         .exec()
@@ -41,6 +42,49 @@ router.post("/signup",(req,res,next)=>{
     
         }
     })
+})
+
+router.post("/login",(req,res,next)=>{
+    console.log(process.env.JWT_KEY);   
+    console.log(req.ip);
+     User.find({email:req.body.email})
+         .exec()
+         .then(foundUser=>{
+             if(foundUser.length==0){
+                 console.log("mail does not exist");
+                 return res.status(404).json({
+                     message:"auth failed"
+                 })
+             } else{
+                 bcrypt.compare(req.body.password,foundUser[0].password,(err,result)=>{
+                     if(err){
+                         console.log("error while hashing");
+                         return res.status(404).json({
+                            message:"auth failed"
+                        })
+                     } 
+                     if(result){//result true if matches else false
+                        console.log("Succesful login");
+                        const token = jwt.sign({
+                            email:foundUser[0].email,
+                            id:foundUser[0]._id
+                        },process.env.JWT_KEY,{
+                            expiresIn:"1h"
+                        });
+                         return res.status(200).json({
+                             message:"auth succesful",
+                             token:token
+                         })
+                     } else{
+                         console.log("password does not match");
+                         return res.status(404).json({
+                            message:"auth failed"
+                        })
+                     }
+                 })
+             }
+         })
+         .catch()
 })
 
 router.delete('/:userId',(req,res,next)=>{
