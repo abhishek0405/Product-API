@@ -97,6 +97,8 @@ router.post('/',checkAuth,upload.single('productImage'),(req,res,next)=>{ //aldr
                        url:'http://localhost:3000/products/'+result._id
                    }
                }
+               console.log('user data is')
+               console.log(req.userData);
                res.status(201).json({
                 message:'SUCCESFUL POST REQUEST',
                 createdProduct:createdProduct
@@ -134,7 +136,7 @@ router.get('/:productId',(req,res,next)=>{
            });
 })
 
-router.patch('/:productId',(req,res,next)=>{ //aldready products specified in app.js so no need again
+router.patch('/:productId',checkAuth,(req,res,next)=>{ //aldready products specified in app.js so no need again
     const productId = req.params.productId;
     const updateOps={};
     //req.body will return an array in this case like [{"propname":"name","value":"NEWPRODUCTNAME"},{"propname":"price",value:"NEWVALUE"}]
@@ -159,7 +161,7 @@ router.patch('/:productId',(req,res,next)=>{ //aldready products specified in ap
            });
 });
 
-router.delete('/:productId',(req,res,next)=>{ //aldready products specified in app.js so no need again
+router.delete('/:productId',checkAuth,(req,res,next)=>{ //aldready products specified in app.js so no need again
     const id = req.params.productId;
     Product.remove({_id:id})
            .exec()

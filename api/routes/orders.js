@@ -2,7 +2,8 @@ const express = require('express')
 const Order = require('../models/order');
 const Product = require('../models/products');
 const router = express.Router()
-router.get('/',(req,res,next)=>{ //aldready products specified in app.js so no need again
+const checkAuth = require('../middleware/check-auth');
+router.get('/',checkAuth,(req,res,next)=>{ //aldready products specified in app.js so no need again
     Order.find()
          .select("quantity product _id")
          .populate('product')// product points to the id in json response.Using populate('product','name price') we can  the specific info we need
@@ -24,7 +25,7 @@ router.get('/',(req,res,next)=>{ //aldready products specified in app.js so no n
          })
 });
 
-router.post('/',(req,res,next)=>{ //aldready products specified in app.js so no need again
+router.post('/',checkAuth,(req,res,next)=>{ //aldready products specified in app.js so no need again
         Product.findById(req.body.productId)
                .then(product=>{
                    console.log(product);
@@ -62,7 +63,7 @@ router.post('/',(req,res,next)=>{ //aldready products specified in app.js so no 
     
 });
 
-router.get('/:orderId',(req,res,next)=>{ 
+router.get('/:orderId',checkAuth,(req,res,next)=>{ 
     const orderid = req.params.orderId;
     Order.findById(orderid)
     .exec()
@@ -82,14 +83,14 @@ router.get('/:orderId',(req,res,next)=>{
     })
 });
 
-router.post('/:orderId',(req,res,next)=>{ 
+router.post('/:orderId',checkAuth,(req,res,next)=>{ 
     const id = req.params.orderId;
     res.status(200).json({
         message:'Post request for order  '+id
     });
 });
 
-router.delete('/:orderId',(req,res,next)=>{ 
+router.delete('/:orderId',checkAuth,(req,res,next)=>{ 
     const id = req.params.orderId;
     Order.remove({_id:id})
            .exec()
